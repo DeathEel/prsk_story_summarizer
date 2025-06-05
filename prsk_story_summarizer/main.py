@@ -11,10 +11,10 @@ def main():
         stories = get_stories()
         selected_story = display_story_menu(stories)
 
-        chapters = get_chapters(selected_story['url'])
+        chapters = get_chapters(selected_story["id"], selected_story["url"])
         selected_chapter = display_chapter_menu(chapters)
 
-        summary = summarize_chapter(selected_chapter['text'])
+        summary = summarize_chapter(selected_story["id"], selected_chapter["id"])
 
         print(summary)
 
