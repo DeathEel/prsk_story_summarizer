@@ -1,25 +1,27 @@
 import sqlite3
-from scraper import scrape_stories, scrape_chapters, scrape_texts
 
 def init_db():
-    conn = sqlite3.connect("prsk_stories.db")
+    conn = sqlite3.connect("data/prsk_stories.db")
     cur = conn.cursor()
 
-	table = ["""
+    table = [
+        """
         CREATE TABLE IF NOT EXISTS stories (
-	        id INTEGER PRIMARY KEY AUTOINCREMENT,
-	        title TEXT NOT NULL,
-	        url TEXT NOT NULL
-	    );""",
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            url TEXT NOT NULL
+        );
+        """,
         """
         CREATE TABLE IF NOT EXISTS chapters (
-	        story_id INTEGER NOT NULL,
+            story_id INTEGER NOT NULL,
             id INTEGER NOT NULL,
-	        title TEXT NOT NULL,
-	        url TEXT NOT NULL,
-	        PRIMARY KEY (story_id, id),
-	        FOREIGN KEY (story_id) REFERENCES stories(id)
-	    );""",
+            title TEXT NOT NULL,
+            url TEXT NOT NULL,
+            PRIMARY KEY (story_id, id),
+            FOREIGN KEY (story_id) REFERENCES stories(id)
+        );
+        """,
         """
         CREATE TABLE IF NOT EXISTS texts (
             story_id INTEGER NOT NULL,
@@ -28,14 +30,15 @@ def init_db():
             PRIMARY KEY (story_id, chapter_id),
             FOREIGN KEY (story_id) REFERENCES stories(id),
             FOREIGN KEY (chapter_id) REFERENCES chapters(id)
-        );"""
-	]
-	
-	for t in table:
-	    cur.execute(t)
-	
-	conn.commit()
-	conn.close()
+        );
+        """
+    ]
+
+    for t in table:
+        cur.execute(t)
+
+    conn.commit()
+    conn.close()
 
 def add_stories_to_db(stories):
     conn = sqlite3.connect("prsk_stories.db")
@@ -75,14 +78,6 @@ def get_stories():
     conn.row_factory = sqlite3.Row  # make rows behave like dicts
     cur = conn.cursor()
 
-    # if stories table not exists, scrape stories
-    cur.execute("""
-        SELECT name FROM sqlite_master WHERE type='table' AND name='stories';
-    """)
-
-    if cur.fetchone() is None:
-        scrape_stories()
-
     # retrieve stories from database
     cur.execute("""
         SELECT * FROM stories
@@ -100,18 +95,10 @@ def get_chapters(story):
     conn.row_factory = sqlite3.Row  # make rows behave like dicts
     cur = conn.cursor()
 
-    # if chapter not exists, scrape chapters
+    # retrieve chapters from database
     cur.execute("""
         SELECT * FROM chapters WHERE story_id = ?
     """, (story_id,))
-
-    if cur.fetchone() is None:
-        scrape_chapters(story_id, story_link)
-
-    # retrieve chapters from database
-    cur.execute("""
-        SELECT * FROM chapters
-    """)
     chapters = cur.fetchall()
     conn.close()
 
@@ -126,18 +113,10 @@ def get_texts(story, chapter):
     conn.row_factory = sqlite3.Row  # make rows behave like dicts
     cur = conn.cursor()
 
-    # if text not exists, scrape text
+    # retrieve texts from database
     cur.execute("""
         SELECT * FROM texts WHERE story_id = ? AND chapter_id = ?
     """, (story_id, chapter_id,))
-
-    if cur.fetchone() is None:
-        scrape_texts(story_id, chapter_id, chapter_link)
-
-    # retrieve texts from database
-    cur.execute("""
-        SELECT * FROM texts
-    """)
     texts = cur.fetchall()
     conn.close()
 
