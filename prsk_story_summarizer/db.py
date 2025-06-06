@@ -41,7 +41,7 @@ def init_db():
     conn.close()
 
 def add_stories_to_db(stories):
-    conn = sqlite3.connect("prsk_stories.db")
+    conn = sqlite3.connect("data/prsk_stories.db")
     cur = conn.cursor()
 
     cur.executemany("""
@@ -52,7 +52,7 @@ def add_stories_to_db(stories):
     conn.close()
 
 def add_chapters_to_db(chapters):
-    conn = sqlite3.connect("prsk_stories.db")
+    conn = sqlite3.connect("data/prsk_stories.db")
     cur = conn.cursor()
 
     cur.executemany("""
@@ -63,7 +63,7 @@ def add_chapters_to_db(chapters):
     conn.close()
 
 def add_text_to_db(text):
-    conn = sqlite3.connect("prsk_stories.db")
+    conn = sqlite3.connect("data/prsk_stories.db")
     cur = conn.cursor()
 
     cur.execute("""
@@ -74,7 +74,7 @@ def add_text_to_db(text):
     conn.close()
 
 def get_stories():
-    conn = sqlite3.connect("prsk_stories.db")
+    conn = sqlite3.connect("data/prsk_stories.db")
     conn.row_factory = sqlite3.Row  # make rows behave like dicts
     cur = conn.cursor()
 
@@ -91,7 +91,7 @@ def get_chapters(story):
     story_id = story["id"]
     story_link = story["url"]
 
-    conn = sqlite3.connect("prsk_stories.db")
+    conn = sqlite3.connect("data/prsk_stories.db")
     conn.row_factory = sqlite3.Row  # make rows behave like dicts
     cur = conn.cursor()
 
@@ -109,7 +109,7 @@ def get_texts(story, chapter):
     chapter_id = chapter["id"]
     chapter_link = chapter["url"]
 
-    conn = sqlite3.connect("prsk_stories.db")
+    conn = sqlite3.connect("data/prsk_stories.db")
     conn.row_factory = sqlite3.Row  # make rows behave like dicts
     cur = conn.cursor()
 
@@ -121,3 +121,23 @@ def get_texts(story, chapter):
     conn.close()
 
     return texts
+
+# testing
+if __name__ == "__main__":
+    conn = sqlite3.connect("data/prsk_stories.db")
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM stories")
+    stories = cur.fetchall()
+    for story in stories:
+        print(story)
+
+    cur.execute("SELECT * FROM chapters")
+    chapters = cur.fetchall()
+    for chapter in chapters:
+        print(chapter)
+
+    cur.execute("SELECT * FROM texts")
+    texts = cur.fetchall()
+    for text in texts:
+        print(text)
