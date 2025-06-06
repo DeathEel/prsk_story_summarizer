@@ -1,6 +1,5 @@
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
-from db import add_story_to_db, add_chapter_to_db, add_text_to_db
 
 def scrape_stories():
     html = render_page("https://sekai.best/storyreader/eventStory")
@@ -21,13 +20,13 @@ def scrape_stories():
         story_link = "https://sekai.best" + story_link_tag["href"]
         story_links.append(story_link)
 
-    # combine all data and add to database
+    # combine all data
     stories = []
     for idx, story in enumerate(reversed(list(zip(story_titles, story_links)))):
         story_dict = dict(id=idx,title=story[0], url=story[1])
         stories.append(story_dict)
 
-    add_story_to_db(stories)
+    return stories
 
 def scrape_chapters(story_id, story_link):
     html = render_page(story_link)
@@ -48,13 +47,13 @@ def scrape_chapters(story_id, story_link):
         chapter_link = "https://sekai.best" + chapter_link_tag["href"]
         chapter_links.append(chapter_link)
 
-    # combine all data and add to database
+    # combine all data
     chapters = []
     for idx, chapter in enumerate(list(zip(chapter_titles, chapter_links))):
         chapter_dict = dict(story_id=story_id, id=idx, title=chapter[0], url=chapter[1])
         chapters.append(chapter_dict)
     
-    add_chapter_to_db(chapters)
+    return chapters
 
 def scrape_texts(story_id, chapter_id, chapter_link):
     html = render_page(chapter_link)
@@ -84,9 +83,8 @@ def scrape_texts(story_id, chapter_id, chapter_link):
         text = text + speaker_and_line[0] + ": "
         text = text + speaker_and_line[1] + "\n"
 
-    # combine all data and add to database
-    text_dict = dict(story_id=story_id, chapter_id=chapter_id, text=text)
-    add_text_to_db(text_dict)
+    # combine all data
+    return dict(story_id=story_id, chapter_id=chapter_id, text=text)
 
 def render_page(url):
     with sync_playwright() as p:
@@ -111,9 +109,9 @@ def render_page(url):
 
 # testing
 if __name__ == "__main__":
-    #html = render_page("https://sekai.best/storyreader/eventStory/64/4")
-    #with open("output.html", "w", encoding="utf-8") as file:
-    #    file.write(BeautifulSoup(html, "html.parser").prettify())
+    html = render_page("https://sekai.best/storyreader/eventStory/64/4")
+    with open("output.html", "w", encoding="utf-8") as file:
+        file.write(BeautifulSoup(html, "html.parser").prettify())
     #scrape_stories()
     #scrape_chapters(62, "https://sekai.best/storyreader/eventStory/64") 
     #text = scrape_text(62, 4, "https://sekai.best/storyreader/eventStory/64/4")
