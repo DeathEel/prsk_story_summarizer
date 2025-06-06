@@ -1,3 +1,12 @@
+def display_main_menu():
+    print("""
+        0. Quit\n
+        1. Refresh stories\n
+        2. Summarize stories\n
+        """)
+    selected_action = get_int_input(f"Select an action to take: ", 0, 2)
+    return selected_action
+
 def display_story_menu(stories):
     for idx, story in enumerate(stories):
         print(f"{idx}: {story['title']}")
