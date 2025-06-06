@@ -1,24 +1,30 @@
-from db import init_db
-from scraper import get_stories, get_chapters
+from db import init_db, get_or_scrape_stories, get_or_scrape_chapters
+from scraper import scrape_stories()
 from summarizer import summarize_chapter
 from menu import display_story_menu, display_chapter_menu
 
 def main():
     init_db()
 
-    user_input = 1
-    while user_input != 0:
+    selected_action = display_main_menu()
+    while selected_action != 0:
+        if selected_action == 1:
+            scrape_stories()
+
+        # retrieve stories from database
         stories = get_stories()
         selected_story = display_story_menu(stories)
 
-        chapters = get_chapters(selected_story["id"], selected_story["url"])
+        # retrieve chapters from database
+        chapters = get_chapters(selected_story)
         selected_chapter = display_chapter_menu(chapters)
 
+        # provide summary of chapter text
         summary = summarize_chapter(selected_story["id"], selected_chapter["id"])
 
         print(summary)
 
-        user_input = int(input("\nChoose 0 to quit. Choose 1 to continue."))
+        selected_action = display_main_menu()
 
 if __name__ == "__main__":
     main()
