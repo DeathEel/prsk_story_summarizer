@@ -1,5 +1,6 @@
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
+#from db import add_story_to_db, add_chapter_to_db, add_text_to_db
 
 def get_stories():
     html = render_page("https://sekai.best/storyreader/eventStory")
@@ -57,8 +58,39 @@ def get_chapters(story_id, story_link):
 
     return chapters
 
-# def get_chapter_text(chapter_link):
-    # something
+def get_text(story_id, chapter_id, chapter_link):
+    html = render_page(chapter_link)
+    soup = BeautifulSoup(html, "html.parser")
+
+    # get speaker
+    speaker_tags = soup.find_all(class_="MuiChip-label MuiChip-labelMedium css-9iedg7")
+    speakers = []
+    for idx, speaker_tag in enumerate(speaker_tags):
+        speaker = speaker_tag.text.strip()
+        if speaker in ["Release Condition", "Background Change", "Background Music", "Sound Effect"]:
+            continue
+        speakers.append(speaker)
+
+    # get line
+    line_tags = soup.find_all(class_="MuiTypography-root MuiTypography-body1 css-5kc7yo")
+    lines = []
+    for line_tag in line_tags:
+        line = line_tag.text.strip().replace("\n", " ")
+        if line in ["No Sound"]:
+            continue
+        lines.append(line)
+
+    # combine speakers and lines
+    text = ""
+    for speaker_and_line in list(zip(speakers, lines)):
+        text = text + speaker_and_line[0] + ": "
+        text = text + speaker_and_line[1] + "\n"
+
+    # add text to database
+    text_dict = dict(story_id=story_id, chapter_id=chapter_id, text=text)
+    #add_text_to_db(text_dict)
+
+    return text_dict
 
 def render_page(url):
     with sync_playwright() as p:
@@ -83,8 +115,10 @@ def render_page(url):
 
 # testing
 if __name__ == "__main__":
-    #html = render_page("https://sekai.best/storyreader/eventStory/64")
+    #html = render_page("https://sekai.best/storyreader/eventStory/64/4")
     #with open("output.html", "w", encoding="utf-8") as file:
     #    file.write(BeautifulSoup(html, "html.parser").prettify())
     #get_stories()
-    get_chapters(62, "https://sekai.best/storyreader/eventStory/64") 
+    #get_chapters(62, "https://sekai.best/storyreader/eventStory/64") 
+    text = get_text(62, 4, "https://sekai.best/storyreader/eventStory/64/4")
+    print(text["text"])
