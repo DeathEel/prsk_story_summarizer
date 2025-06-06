@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 .env
 prsk_story_summarizer/data/*.db
+prsk_story_summarizer/*.html
