@@ -1,8 +1,8 @@
 import sqlite3
 
 def init_db():
-    conn = sqlite3.connect("stories.db")
-    cur = conn.cursor()
+    con = sqlite3.connect("prsk_stories.db")
+    cur = con.cursor()
 
 	table = [
 	    """ CREATE TABLE IF NOT EXISTS stories (
@@ -33,14 +33,39 @@ def init_db():
 	for t in table:
 	    cur.execute(t)
 	
-	conn.commit()
-	conn.close()
+	con.commit()
+	con.close()
 
 def add_story_to_db(story):
-    # story is a dict with id, title, url
+    con = sqlite3.connect("prsk_stories.db")
+    cur = con.cursor()
+
+    cur.execute("""
+            INSERT INTO stories VALUES (:id, :title, :url)
+    """, story)
+
+    con.commit()
+    con.close()
 
 def add_chapter_to_db(chapter):
-    # chapter is a dict with story_id, id, title, url
+    con = sqlite3.connect("prsk_stories.db")
+    cur = con.cursor()
+
+    cur.execute("""
+            INSERT INTO chapters VALUES (:story_id, :id, :title, :url)
+    """, story)
+
+    con.commit()
+    con.close()
 
 def add_text_to_db(text):
     # text is a dict with story_id, chapter_id, text
+    con = sqlite3.connect("prsk_stories.db")
+    cur = con.cursor()
+
+    cur.execute("""
+            INSERT INTO texts VALUES (:story_id, :chapter_id, :text)
+    """, story)
+
+    con.commit()
+    con.close()
