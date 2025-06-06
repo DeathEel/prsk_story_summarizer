@@ -1,12 +1,12 @@
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
-#from db import add_story_to_db, add_chapter_to_db, add_text_to_db
+from db import add_story_to_db, add_chapter_to_db, add_text_to_db
 
-def get_stories():
+def scrape_stories():
     html = render_page("https://sekai.best/storyreader/eventStory")
     soup = BeautifulSoup(html, "html.parser")
 
-    # get story titles
+    # scrape story titles
     story_title_tags = soup.find_all(class_="MuiTypography-root MuiTypography-body1 css-3kq318")
     story_titles = []
     for idx, story_title_tag in enumerate(story_title_tags):
@@ -14,27 +14,26 @@ def get_stories():
             continue
         story_titles.append(story_title_tag.text.strip())
 
-    # get story links
+    # scrape story links
     story_link_tags = soup.find_all(class_="MuiBox-root css-f02xnr")
     story_links = []
     for story_link_tag in story_link_tags:
         story_link = "https://sekai.best" + story_link_tag["href"]
         story_links.append(story_link)
 
-    # combine to database
+    # combine all data and add to database
     stories = []
     for idx, story in enumerate(reversed(list(zip(story_titles, story_links)))):
         story_dict = dict(id=idx,title=story[0], url=story[1])
         stories.append(story_dict)
-        add_story_to_db(story_dict)
 
-    return stories
+    add_story_to_db(stories)
 
-def get_chapters(story_id, story_link):
+def scrape_chapters(story_id, story_link):
     html = render_page(story_link)
     soup = BeautifulSoup(html, "html.parser")
 
-    # get chapter titles
+    # scrape chapter titles
     chapter_title_tags = soup.find_all(class_="MuiTypography-root MuiTypography-body1 css-3kq318")
     chapter_titles = []
     for idx, chapter_title_tag in enumerate(chapter_title_tags):
@@ -42,27 +41,26 @@ def get_chapters(story_id, story_link):
             continue
         chapter_titles.append(chapter_title_tag.text.strip())
 
-    # get chapter links
+    # scrape chapter links
     chapter_link_tags = soup.find_all(class_="MuiBox-root css-f02xnr")
     chapter_links = []
     for chapter_link_tag in chapter_link_tags:
         chapter_link = "https://sekai.best" + chapter_link_tag["href"]
         chapter_links.append(chapter_link)
 
-    # combine to database
+    # combine all data and add to database
     chapters = []
     for idx, chapter in enumerate(list(zip(chapter_titles, chapter_links))):
         chapter_dict = dict(story_id=story_id, id=idx, title=chapter[0], url=chapter[1])
         chapters.append(chapter_dict)
-        add_chapter_to_db(chapter_dict)
+    
+    add_chapter_to_db(chapters)
 
-    return chapters
-
-def get_text(story_id, chapter_id, chapter_link):
+def scrape_texts(story_id, chapter_id, chapter_link):
     html = render_page(chapter_link)
     soup = BeautifulSoup(html, "html.parser")
 
-    # get speaker
+    # scrape speaker
     speaker_tags = soup.find_all(class_="MuiChip-label MuiChip-labelMedium css-9iedg7")
     speakers = []
     for idx, speaker_tag in enumerate(speaker_tags):
@@ -71,7 +69,7 @@ def get_text(story_id, chapter_id, chapter_link):
             continue
         speakers.append(speaker)
 
-    # get line
+    # scrape line
     line_tags = soup.find_all(class_="MuiTypography-root MuiTypography-body1 css-5kc7yo")
     lines = []
     for line_tag in line_tags:
@@ -86,11 +84,9 @@ def get_text(story_id, chapter_id, chapter_link):
         text = text + speaker_and_line[0] + ": "
         text = text + speaker_and_line[1] + "\n"
 
-    # add text to database
+    # combine all data and add to database
     text_dict = dict(story_id=story_id, chapter_id=chapter_id, text=text)
-    #add_text_to_db(text_dict)
-
-    return text_dict
+    add_text_to_db(text_dict)
 
 def render_page(url):
     with sync_playwright() as p:
@@ -118,7 +114,7 @@ if __name__ == "__main__":
     #html = render_page("https://sekai.best/storyreader/eventStory/64/4")
     #with open("output.html", "w", encoding="utf-8") as file:
     #    file.write(BeautifulSoup(html, "html.parser").prettify())
-    #get_stories()
-    #get_chapters(62, "https://sekai.best/storyreader/eventStory/64") 
-    text = get_text(62, 4, "https://sekai.best/storyreader/eventStory/64/4")
-    print(text["text"])
+    #scrape_stories()
+    #scrape_chapters(62, "https://sekai.best/storyreader/eventStory/64") 
+    #text = scrape_text(62, 4, "https://sekai.best/storyreader/eventStory/64/4")
+    #print(text["text"])
