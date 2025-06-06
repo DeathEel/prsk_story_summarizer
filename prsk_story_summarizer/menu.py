@@ -1,9 +1,5 @@
 def display_main_menu():
-    print("""
-        0. Quit\n
-        1. Refresh stories\n
-        2. Summarize stories\n
-        """)
+    print("0. Quit\n1. Refresh stories\n2. Summarize stories")
     selected_action = get_int_input(f"Select an action to take: ", 0, 2)
     return selected_action
 
