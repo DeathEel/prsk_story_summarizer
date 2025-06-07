@@ -11,8 +11,11 @@ This Python application scrapes, stores, and summarizes event stories from Proje
 
 ## Features
 - Scrape story and chapter data and texts from an archive website: [Sekai Viewer](https://sekai.best/storyreader/eventStory)
-- Store story and chapter data and texts in SQLite database for minimal wait times.
-- Use GPT4All (Meta-Llama-3-8B-Instruct) for per-chapter summary generation.
+- Refresh stories when new stories are released
+- Store story and chapter data, texts, and summaries in SQLite database for minimal wait times.
+- Use GPT4All (Meta-Llama-3-8B-Instruct) for summary generation.
+- Generate summaries for individual chapters or all chapters in a story.
+- Read full story texts.
 
 ## Installation
 1. Clone the repository
