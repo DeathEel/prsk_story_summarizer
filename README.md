@@ -4,7 +4,6 @@ This Python application scrapes, stores, and summarizes event stories from Proje
 ## Table of Contents
 - [Features](#features)
 - [Installation](#installation)
-- [Setup](#setup)
 - [Usage](#usage)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
