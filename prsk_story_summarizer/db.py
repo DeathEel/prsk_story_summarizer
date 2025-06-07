@@ -7,7 +7,7 @@ def init_db():
     table = [
         """
         CREATE TABLE IF NOT EXISTS stories (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY,
             title TEXT NOT NULL,
             url TEXT NOT NULL
         );
@@ -27,6 +27,7 @@ def init_db():
             story_id INTEGER NOT NULL,
             chapter_id INTEGER NOT NULL,
             text TEXT NOT NULL,
+            summary TEXT,
             PRIMARY KEY (story_id, chapter_id),
             FOREIGN KEY (story_id) REFERENCES stories(id),
             FOREIGN KEY (chapter_id) REFERENCES chapters(id)
@@ -67,7 +68,7 @@ def add_text_to_db(text):
     cur = conn.cursor()
 
     cur.execute("""
-        INSERT OR IGNORE INTO texts VALUES (:story_id, :chapter_id, :text)
+        INSERT OR IGNORE INTO texts (story_id, chapter_id, text) VALUES (:story_id, :chapter_id, :text)
     """, text)
 
     conn.commit()
