@@ -3,7 +3,7 @@ from db import init_db
 from scraper import scrape_stories
 from manager import get_or_scrape_stories, get_or_scrape_chapters, get_or_scrape_texts
 from summarizer import summarize_chapter
-from menu import display_main_menu, display_story_menu, display_chapter_menu
+from menu import display_main_menu, display_story_menu, display_chapter_menu, display_summary_menu
 
 def main():
     init_db()
@@ -28,7 +28,11 @@ def main():
             print(text[0]["text"])
         else:
             # provide summary of chapter text
-            summary = summarize_chapter(model, selected_story, selected_chapter)
+            overwrite_desired = display_summary_menu()
+            if overwrite_desired:
+                summary = summarize_chapter(model, selected_story, selected_chapter, True)
+            else:
+                summary = summarize_chapter(model, selected_story, selected_chapter, False)
             print(summary)
 
         selected_action = display_main_menu()

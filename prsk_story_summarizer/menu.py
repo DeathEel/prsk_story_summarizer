@@ -15,6 +15,11 @@ def display_chapter_menu(chapters):
     selected_index = get_int_input(f"Select a chapter: ", 0, len(chapters) - 1)
     return chapters[selected_index]
 
+def display_summary_menu():
+    print("0. Read summary from database\n1. Overwrite summary in database")
+    selected_action = get_int_input(f"Select an action to take: ", 0, 1)
+    return selected_action
+
 def get_int_input(prompt, lower_bound, upper_bound):
     while True:
         try:

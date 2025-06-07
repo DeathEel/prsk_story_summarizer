@@ -82,6 +82,7 @@ def scrape_texts(story_id, chapter_id, chapter_link):
     for speaker_and_line in list(zip(speakers, lines)):
         text = text + speaker_and_line[0] + ": "
         text = text + speaker_and_line[1] + "\n"
+    text = text[:-1]
 
     # combine all data
     return dict(story_id=story_id, chapter_id=chapter_id, text=text)

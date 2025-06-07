@@ -74,6 +74,17 @@ def add_text_to_db(text):
     conn.commit()
     conn.close()
 
+def add_summary_to_db(summary, story_id, chapter_id):
+    conn = sqlite3.connect("data/prsk_stories.db")
+    cur = conn.cursor()
+
+    cur.execute("""
+        UPDATE texts SET summary = ? WHERE story_id = ? AND chapter_id = ?
+    """, (summary, story_id, chapter_id,))
+
+    conn.commit()
+    conn.close()
+
 def get_stories():
     conn = sqlite3.connect("data/prsk_stories.db")
     conn.row_factory = sqlite3.Row  # make rows behave like dicts
