@@ -1,18 +1,18 @@
 def display_main_menu():
-    print("0. Quit\n1. Refresh stories\n2. Summarize stories")
-    selected_action = get_int_input(f"Select an action to take: ", 0, 2)
+    print("0. Quit\n1. Refresh stories\n2. Read stories\n3. Summarize stories")
+    selected_action = get_int_input(f"Select an action to take: ", 0, 3)
     return selected_action
 
 def display_story_menu(stories):
     for idx, story in enumerate(stories):
         print(f"{idx}: {story['title']}")
-    selected_index = get_int_input(f"Select the story to read the summary of: ", 0, len(stories) - 1)
+    selected_index = get_int_input(f"Select a story: ", 0, len(stories) - 1)
     return stories[selected_index]
 
 def display_chapter_menu(chapters):
     for idx, chapter in enumerate(chapters):
         print(f"{idx}: {chapter['title']}")
-    selected_index = get_int_input(f"Select the chapter to read the summary of: ", 0, len(chapters) - 1)
+    selected_index = get_int_input(f"Select a chapter: ", 0, len(chapters) - 1)
     return chapters[selected_index]
 
 def get_int_input(prompt, lower_bound, upper_bound):
@@ -28,5 +28,5 @@ def get_int_input(prompt, lower_bound, upper_bound):
 
 # testing
 if __name__ == "__main__":
-    stories = [{"id": 0, "title": "ligma", "url": "ligmaagain"}, {"id": 1, "title": "not ligma", "url": "notligmaagain"}]
+    stories = [{"id": 0, "title": "title0", "url": "url0"}, {"id": 1, "title": "title1", "url": "url1"}]
     display_story_menu(stories)
