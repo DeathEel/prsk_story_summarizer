@@ -20,20 +20,30 @@ def main():
 
         # retrieve chapters from database
         chapters = get_or_scrape_chapters(selected_story)
-        selected_chapter = display_chapter_menu(chapters)
+        selected_chapters = display_chapter_menu(chapters)
 
         if (selected_action == 2):
-            # provide entire chapter text
-            text = get_or_scrape_texts(selected_story, selected_chapter)
-            print(text[0]["text"])
+            for selected_chapter in selected_chapters:
+                # provide entire chapter text
+                text = get_or_scrape_texts(selected_story, selected_chapter)
+                print(f"\n\tStory: {selected_story["title"]}")
+                print(f"\tChapter: {selected_chapter["title"]}")
+                print(text[0]["text"])
         else:
             # provide summary of chapter text
             overwrite_desired = display_summary_menu()
             if overwrite_desired:
-                summary = summarize_chapter(model, selected_story, selected_chapter, True)
+                for selected_chapter in selected_chapters:
+                    summary = summarize_chapter(model, selected_story, selected_chapter, True)
+                    print(f"\n\tStory: {selected_story["title"]}")
+                    print(f"\tChapter: {selected_chapter["title"]}")
+                    print(summary)
             else:
-                summary = summarize_chapter(model, selected_story, selected_chapter, False)
-            print(summary)
+                for selected_chapter in selected_chapters:
+                    summary = summarize_chapter(model, selected_story, selected_chapter, False)
+                    print(f"\n\tStory: {selected_story["title"]}")
+                    print(f"\tChapter: {selected_chapter["title"]}")
+                    print(summary)
 
         selected_action = display_main_menu()
 

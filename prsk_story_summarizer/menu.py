@@ -1,22 +1,29 @@
 def display_main_menu():
-    print("0. Quit\n1. Refresh stories\n2. Read stories\n3. Summarize stories")
+    print("\n0. Quit\n1. Refresh stories\n2. Read stories\n3. Summarize stories")
     selected_action = get_int_input(f"Select an action to take: ", 0, 3)
     return selected_action
 
 def display_story_menu(stories):
+    print("\n")
     for idx, story in enumerate(stories):
         print(f"{idx}: {story['title']}")
     selected_index = get_int_input(f"Select a story: ", 0, len(stories) - 1)
     return stories[selected_index]
 
 def display_chapter_menu(chapters):
+    print("\n")
     for idx, chapter in enumerate(chapters):
         print(f"{idx}: {chapter['title']}")
-    selected_index = get_int_input(f"Select a chapter: ", 0, len(chapters) - 1)
-    return chapters[selected_index]
+    print(f"{len(chapters)}: All Chapters")
+    selected_index = get_int_input(f"Select a chapter: ", 0, len(chapters))
+
+    if selected_index == len(chapters):
+        return chapters
+
+    return [chapters[selected_index]]
 
 def display_summary_menu():
-    print("0. Read summary from database\n1. Overwrite summary in database")
+    print("\n0. Read summary from database\n1. Overwrite summary in database")
     selected_action = get_int_input(f"Select an action to take: ", 0, 1)
     return selected_action
 
