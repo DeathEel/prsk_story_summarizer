@@ -64,7 +64,7 @@ def scrape_texts(story_id, chapter_id, chapter_link):
     speakers = []
     for idx, speaker_tag in enumerate(speaker_tags):
         speaker = speaker_tag.text.strip()
-        if speaker in ["Release Condition", "Background Change", "Background Music", "Sound Effect"]:
+        if speaker in ["Release Condition", "Background Change", "Background Music", "Sound Effect", "UNKNOWN"]:
             continue
         speakers.append(speaker)
 
