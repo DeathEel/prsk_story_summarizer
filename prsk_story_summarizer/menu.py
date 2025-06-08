@@ -23,8 +23,8 @@ def display_chapter_menu(chapters):
     return [chapters[selected_index]]
 
 def display_summary_menu():
-    print("\n0. Read summary from database\n1. Overwrite summary in database")
-    selected_action = get_int_input(f"Select an action to take: ", 0, 1)
+    print("\n0. No\n1. Yes")
+    selected_action = get_int_input(f"Overwite summary in database?: ", 0, 1)
     return selected_action
 
 def get_int_input(prompt, lower_bound, upper_bound):
