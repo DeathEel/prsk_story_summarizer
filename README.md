@@ -25,7 +25,7 @@ cd prsk_story_summarizer
 
 2. Create and activate a Python virtual environment
 ```bash
-python3 -m .venv venv
+python3 -m venv .venv
 source .venv/bin/activate
 ```
 
