@@ -4,14 +4,14 @@ def display_main_menu():
     return selected_action
 
 def display_story_menu(stories):
-    print("\n")
+    print("")
     for idx, story in enumerate(stories):
         print(f"{idx}: {story['title']}")
     selected_index = get_int_input(f"Select a story: ", 0, len(stories) - 1)
     return stories[selected_index]
 
 def display_chapter_menu(chapters):
-    print("\n")
+    print("")
     for idx, chapter in enumerate(chapters):
         print(f"{idx}: {chapter['title']}")
     print(f"{len(chapters)}: All Chapters")
