@@ -4,3 +4,4 @@ __pycache__/
 .env
 prsk_story_summarizer/data/*.db
 prsk_story_summarizer/*.html
+prsk_story_summarizer/llm/

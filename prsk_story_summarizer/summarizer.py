@@ -1,15 +1,14 @@
 from manager import get_or_scrape_texts
 from db import add_summary_to_db
 
-def summarize_chapter(model, story, chapter, overwrite):
+def summarize_chapter(model, tokenizer, story, chapter, overwrite):
     text = get_or_scrape_texts(story, chapter)
     if text[0]["summary"] and not overwrite:
         return text[0]["summary"]
 
-    prompt = f"You are a summarizer for a fictional story. You will be provided with the text of a chapter from this story. This text will be a blend of dialogue, captions, and internal monologue (indicated by parentheses). Voice calls are represented using angle brackets. Your task is to generate a summary of the provided chapter for players to read when they want to remember key events and interactions. Your response must strictly contain only the summary; do not write extra text before or after the summary.\n\n\n{text[0]['text']}\n\n\nSummary:"
+    prompt = f"Summarize the following fictional story in a single paragraph of around five sentences (approximately 50 words). The summary should provide an objective recounting of key events, focusing on the characters' interactions and especially noting when characters meet for the first time. Avoid interpretation or speculation. Assume the reader has already read the story and needs a factual, concise refresher. Do not repeat this prompt or explain your response.\n\nStory:\n{text[0]['text']}\n\nSummary:\n"
 
-    with model.chat_session():
-        summary = model.generate(prompt)
-        add_summary_to_db(summary, story["id"], chapter["id"])
+    summary = model(prompt, max_new_tokens=300, do_sample=False, return_full_text=False, eos_token_id=tokenizer.eos_token_id, stop_sequence=["\n\n"])[0]["generated_text"].strip().split("\n\n")[0].strip()
+    add_summary_to_db(summary, story["id"], chapter["id"])
 
-        return summary
+    return summary
