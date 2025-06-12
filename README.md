@@ -9,8 +9,8 @@ This Python application scrapes, stores, and summarizes event stories from Proje
 - [Acknowledgements](#acknowledgements)
 
 ## Features
-- Scrape story and chapter data and texts from an archive website: [Sekai Viewer](https://sekai.best/storyreader/eventStory)
-- Refresh stories when new stories are released
+- Scrape story and chapter data and texts from [Sekai Viewer](https://sekai.best/storyreader/eventStory).
+- Refresh stories when new stories are released.
 - Store story and chapter data, texts, and summaries in SQLite database for minimal wait times.
 - Use [IBM-Granite/Granite-3.3-8B-Instruct](https://huggingface.co/ibm-granite/granite-3.3-8b-instruct) for summary generation.
 - Generate summaries for individual chapters or all chapters in a story.
@@ -46,7 +46,7 @@ python main.py
 - No internet connection is required during generation once the LLM is downloaded.
 - Ensure you have sufficient RAM (12GB+) to run the model locally.
 - The model will be downloaded to the `llm/` directory.
-- All data, including the summaries, are stored in the SQLite database located in `data/prsk_stories.db`
+- All data, including the summaries, are stored in the SQLite database located in `data/prsk_stories.db`.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
