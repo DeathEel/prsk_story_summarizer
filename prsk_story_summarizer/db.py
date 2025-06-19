@@ -26,7 +26,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS texts (
             story_id INTEGER NOT NULL,
             chapter_id INTEGER NOT NULL,
-            text TEXT NOT NULL,
+            transcript TEXT NOT NULL,
             summary TEXT,
             PRIMARY KEY (story_id, chapter_id),
             FOREIGN KEY (story_id) REFERENCES stories(id),
@@ -63,13 +63,13 @@ def add_chapters_to_db(chapters):
     conn.commit()
     conn.close()
 
-def add_text_to_db(text):
+def add_transcript_to_db(transcript):
     conn = sqlite3.connect("data/prsk_stories.db")
     cur = conn.cursor()
 
     cur.execute("""
-        INSERT OR IGNORE INTO texts (story_id, chapter_id, text) VALUES (:story_id, :chapter_id, :text)
-    """, text)
+        INSERT OR IGNORE INTO texts (story_id, chapter_id, transcript) VALUES (:story_id, :chapter_id, :transcript)
+    """, transcript)
 
     conn.commit()
     conn.close()
@@ -125,7 +125,7 @@ def get_texts(story, chapter):
     conn.row_factory = sqlite3.Row  # make rows behave like dicts
     cur = conn.cursor()
 
-    # retrieve texts from database
+    # retrieve transcripts from database
     cur.execute("""
         SELECT * FROM texts WHERE story_id = ? AND chapter_id = ?
     """, (story_id, chapter_id,))

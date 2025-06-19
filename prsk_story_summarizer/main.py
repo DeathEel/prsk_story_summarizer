@@ -31,13 +31,13 @@ def main():
 
         if (selected_action == 2):
             for selected_chapter in selected_chapters:
-                # provide entire chapter text
-                text = get_or_scrape_texts(selected_story, selected_chapter)
+                # provide entire chapter transcript
+                transcript = get_or_scrape_texts(selected_story, selected_chapter)["transcript"]
                 print(f"\n\tStory: {selected_story["title"]}")
                 print(f"\tChapter: {selected_chapter["title"]}")
-                print(text[0]["text"])
+                print(transcript)
         else:
-            # provide summary of chapter text
+            # provide summary of chapter transcript
             overwrite_desired = display_summary_menu()
             if overwrite_desired:
                 for selected_chapter in selected_chapters:

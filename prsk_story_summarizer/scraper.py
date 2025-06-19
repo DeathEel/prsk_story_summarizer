@@ -55,7 +55,7 @@ def scrape_chapters(story_id, story_link):
     
     return chapters
 
-def scrape_texts(story_id, chapter_id, chapter_link):
+def scrape_transcript(story_id, chapter_id, chapter_link):
     html = render_page(chapter_link)
     soup = BeautifulSoup(html, "html.parser")
 
@@ -78,14 +78,14 @@ def scrape_texts(story_id, chapter_id, chapter_link):
         lines.append(line)
 
     # combine speakers and lines
-    text = ""
+    transcript = ""
     for speaker_and_line in list(zip(speakers, lines)):
-        text = text + speaker_and_line[0] + ": "
-        text = text + speaker_and_line[1] + "\n"
-    text = text[:-1]
+        transcript = transcript + speaker_and_line[0] + ": "
+        transcript = transcript + speaker_and_line[1] + "\n"
+    transcript = transcript[:-1]
 
     # combine all data
-    return dict(story_id=story_id, chapter_id=chapter_id, text=text)
+    return dict(story_id=story_id, chapter_id=chapter_id, transcript=transcript)
 
 def render_page(url):
     with sync_playwright() as p:
@@ -115,5 +115,5 @@ if __name__ == "__main__":
         file.write(BeautifulSoup(html, "html.parser").prettify())
     #scrape_stories()
     #scrape_chapters(62, "https://sekai.best/storyreader/eventStory/64") 
-    #text = scrape_text(62, 4, "https://sekai.best/storyreader/eventStory/64/4")
-    #print(text["text"])
+    #transcript = scrape_transcript(62, 4, "https://sekai.best/storyreader/eventStory/64/4")
+    #print(transcript["transcript"])

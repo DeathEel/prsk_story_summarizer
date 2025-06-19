@@ -1,5 +1,5 @@
-from db import get_stories, get_chapters, get_texts, add_stories_to_db, add_chapters_to_db, add_text_to_db
-from scraper import scrape_stories, scrape_chapters, scrape_texts
+from db import get_stories, get_chapters, get_texts, add_stories_to_db, add_chapters_to_db, add_transcript_to_db
+from scraper import scrape_stories, scrape_chapters, scrape_transcript
 
 def get_or_scrape_stories():
     stories = get_stories()
@@ -19,8 +19,10 @@ def get_or_scrape_chapters(story):
 
 def get_or_scrape_texts(story, chapter):
     texts = get_texts(story, chapter)
-    if not texts:
-        scraped_texts = scrape_texts(story["id"], chapter["id"], chapter["url"])
-        add_text_to_db(scraped_texts)
+
+    # if transcript not found, scrape it
+    if not texts or not texts[0]["transcript"]:
+        scraped_transcript = scrape_transcript(story["id"], chapter["id"], chapter["url"])
+        add_transcript_to_db(scraped_transcript)
         texts = get_texts(story, chapter)
-    return texts
+    return texts[0]
