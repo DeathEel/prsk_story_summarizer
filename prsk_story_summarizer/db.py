@@ -125,7 +125,7 @@ def get_texts(story, chapter):
     conn.row_factory = sqlite3.Row  # make rows behave like dicts
     cur = conn.cursor()
 
-    # retrieve transcripts from database
+    # retrieve texts from database
     cur.execute("""
         SELECT * FROM texts WHERE story_id = ? AND chapter_id = ?
     """, (story_id, chapter_id,))
