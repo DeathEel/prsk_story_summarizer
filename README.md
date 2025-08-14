@@ -19,7 +19,7 @@ This Python application scrapes, stores, and summarizes event stories from Proje
 ## Installation
 1. Clone the repository
 ```bash
-git clone https://github.com/DeathEel/prsk_story_summarizer.git
+git clone ssh://git@github.com/DeathEel/prsk_story_summarizer.git
 cd prsk_story_summarizer
 ```
 
