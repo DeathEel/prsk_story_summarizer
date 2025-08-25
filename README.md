@@ -9,12 +9,12 @@ This Python application scrapes, stores, and summarizes event stories from Proje
 - [Acknowledgements](#acknowledgements)
 
 ## Features
-- Scrape story and chapter data and texts from [Sekai Viewer](https://sekai.best/storyreader/eventStory).
-- Refresh stories when new stories are released.
-- Store story and chapter data, texts, and summaries in SQLite database for minimal wait times.
-- Use [IBM-Granite/Granite-3.3-8B-Instruct](https://huggingface.co/ibm-granite/granite-3.3-8b-instruct) for summary generation.
-- Generate summaries for individual chapters or all chapters in a story.
-- Read full story texts.
+- Scrapes story and chapter data and texts from [Sekai Viewer](https://sekai.best/storyreader/eventStory).
+- Refreshes stories when new stories are released.
+- Stores story and chapter data, texts, and summaries in SQLite database for minimal wait times.
+- Uses [IBM-Granite/Granite-3.3-8B-Instruct](https://huggingface.co/ibm-granite/granite-3.3-8b-instruct) for summary generation.
+- Generates summaries for individual chapters or all chapters in a story.
+- Reads full story texts.
 
 ## Installation
 1. Clone the repository
